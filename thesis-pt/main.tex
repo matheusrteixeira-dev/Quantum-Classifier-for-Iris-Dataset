@@ -1,0 +1,87 @@
+\documentclass[rascunho,xindy,table]{fei}
+\PassOptionsToPackage{brazil,portuguese,english}{babel}
+\usepackage{babel} 
+\usepackage[utf8]{inputenc}
+
+% Table Settings
+\usepackage{longtable}
+\usepackage{rotating}
+\usepackage{xcolor,colortbl}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{pdfpages}
+\usepackage{enumitem}
+\usepackage{float}
+\usepackage{braket}
+\usepackage{amsmath}
+\usepackage{physics}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{csquotes}
+\usepackage{tikz}
+\usepackage{array}
+\usepackage{multirow}
+\usetikzlibrary{positioning}
+\usetikzlibrary{quantikz2}
+%\usepackage[table]{xcolor}
+%\newcolumntype{P}[1]{>{\raggedright\vrule height4ex width 0pt}p{#1}<{\vrule depth 2.5ex width 0pt}}
+
+\author{Matheus Teixeira}
+\title{Classificação de Dados em Computadores Quânticos}
+
+\subtitulo{Classificador Quântico Variacional}
+
+%\cidade{Cidade}
+
+\instituicao{CENTRO UNIVERSITÁRIO FEI}
+
+\makeindex
+\newacronym[longplural=Quantum Machine Learning]{qml}{QML}{\textit{Quantum Machine Learning}}
+\newacronym[longplural=Quantum Support Vector Machine]{qsvm}{QSVM}{\textit{Quantum Support Vector Machine}}
+\newacronym[longplural=Quantum Principal Component Analysis]{qpca}{qPCA}{\textit{Quantum Principal Component Analysis}}
+\newacronym[longplural=Support Vector Machine]{svm}{SVM}{\textit{Support Vector Machine}}
+\newacronym[longplural=Quantum Neural Network]{qnn}{QNN}{\textit{Quantum Neural Network}}
+\makeglossaries
+\begin{document}
+
+\maketitle
+
+\begin{folhaderosto}
+Trabalho de Conclusão de Curso, apresentado ao Centro Universitário FEI, como parte dos requisitos necessários para obtenção do título de Bacharel em Ciência da Computação. Orientado pelo Prof. Dr. Roberto Baginski B. Santos
+\end{folhaderosto}
+
+\includepdf[pages={1}]{documentos/ficha_catalografica.pdf}
+
+\begin{resumo}
+À medida que nos aproximamos das dimensões mínimas dos transistores utilizados em CPUs, nos aproximamos também dos limites computacionais dos computadores clássicos. Diante da crescente demanda por maior poder de processamento para resolver problemas complexos, surge a necessidade de uma ferramenta mais capacitada: os computadores quânticos. Em resposta a essa situação, diversas áreas da computação estão sendo adaptadas para aplicar seus métodos em computadores quânticos. Entre essas áreas, destaca-se o campo do aprendizado de máquina. O presente trabalho descreve um método de aprendizado de máquina supervisionado que utiliza o classificador quântico variacional para a classificação de dados em um computador quântico.
+
+\palavraschave{Transistores; CPUs; computadores clássicos; computadores quânticos; aprendizado de máquina supervisionado; classificador quântico variacional.}
+
+\end{resumo}
+
+\begin{abstract}
+As transistors used in CPUs approach their minimum physical dimensions, classical computers also approach their computational limits. The growing demand for greater processing power to solve complex problems creates the need for a more capable tool: quantum computers. In response, several areas of computing are being adapted so that their methods can be applied on quantum computers. Among these areas, machine learning stands out. This thesis describes a supervised machine learning method that uses a variational quantum classifier to classify data on a quantum computer.
+
+\keywords{Transistors; CPUs; classical computers; quantum computers; supervised machine learning; variational quantum classifier.}
+\end{abstract}
+
+\listoffigures
+\listoftables
+\printacronyms
+\let\cleardoublepage\clearpage
+
+\nocite{Schuld2021QuantumML, Schuld2020EffectOD, Huang2020PowerOD, Oshurko2020QuantumML, Broughton2020TensorFlowQA, Schuld2018QuantumML, Cerezo2022ChallengesAO, Meyer2022ExploitingSI, Larocca2022GroupInvariantQM, Chen2021FederatedQM, Caro2021GeneralizationIQ, Wu2022ChallengesAO, Dilip2022DataCF, Gibbs2022DynamicalSV, Peters2022GeneralizationDO, Zheng2022OnTS, Gupta2022QuantumML, Mensa2022QuantumML, Kerenidis2022QuantumML, Ragone2022RepresentationTF, Garcia2022SystematicLR, Schuld2020Circuitcentric, Liu2021QuantumSpeedup}
+
+\tableofcontents
+\input{section/introducao.tex}
+\input{section/trabalhos_relacionados.tex}
+\input{section/conceitos.tex}
+\input{section/metodologia.tex}
+\input{section/resultados.tex}
+\input{section/conclusao.tex}
+\bibliography{section/referencias.bib}
+
+\end{document}

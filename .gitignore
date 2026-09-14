@@ -1,0 +1,36 @@
+# LaTeX build artifacts (run `make` inside thesis-pt/ or thesis-en/ to rebuild)
+*.aux
+*.bbl
+*.blg
+*.bcf
+*.run.xml
+*.fdb_latexmk
+*.fls
+*.synctex.gz
+*.xdv
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.idx
+*.ilg
+*.ind
+# glossaries / acronyms
+*.acn
+*.acr
+*.alg
+*.glg
+*.glo
+*.gls
+*.glsdefs
+*.ist
+
+# Compiled theses: regenerate from source, do not commit
+/thesis-pt/main.pdf
+/thesis-en/main.pdf
+
+# Python
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/

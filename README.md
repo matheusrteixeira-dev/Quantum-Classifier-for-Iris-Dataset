@@ -1,8 +1,8 @@
-# Quantum Classifier with QSVM Method for Iris Dataset Classification
+# Quantum Classifier with the VQC Method for Iris Dataset Classification
 
 ## Introduction
 
-This repository contains a Python implementation of a quantum classifier using the QSVM method for classifying the Iris dataset. The code demonstrates how to train and evaluate a quantum classifier alongside a classical SVM classifier for comparison.
+This repository contains a Python implementation of a quantum classifier using the variational quantum classifier (VQC) method for classifying the Iris dataset. The code demonstrates how to train and evaluate a quantum classifier alongside a classical SVM classifier for comparison.
 
 ## Required Libraries
 

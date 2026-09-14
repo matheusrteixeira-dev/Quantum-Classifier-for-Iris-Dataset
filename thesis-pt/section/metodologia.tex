@@ -1,0 +1,82 @@
+\chapter{METODOLOGIA} \label{chap_metodologia}
+
+Este capítulo delineia os métodos empregados na criação do classificador quântico por meio do uso de um classificador quântico variacional (VQC) e a aplicação do conjunto de dados Iris como base de treinamento. Para elucidar a vantagem do uso de um classificador quântico, uma comparação é feita com um classificador clássico usando métodos tradicionais de \textit{machine learning}. Os experimentos foram executados em um simulador de computador quântico e em um computador quântico real para melhorar a validação dos resultados obtidos.
+
+\section{Funcionamento do Classificador Clássico e Quântico}
+
+Para a implementação do classificador clássico, utilizou-se o algoritmo de Máquinas de Vetores de Suporte (SVM - \textit{Support Vector Machines}) \cite{Zhou2018HandwrittenDigitRecognition}. O SVM é um poderoso algoritmo de aprendizado supervisionado que constrói um hiperplano ótimo em um espaço de alta (ou infinita) dimensão para separar os dados de diferentes classes. No caso deste estudo, ele foi utilizado com um \textit{kernel} linear e com um esquema de um contra o resto (\textit{One-vs-Rest}) para tratar o problema multiclasse do conjunto de dados Iris.
+
+Por outro lado, o classificador quântico, também conhecido como VQC (\textit{Variational Quantum Classifier}), baseia-se na arquitetura variacional do processador quântico \cite{Havlicek2019qSupervisedLearning}. No classificador quântico, os dados são codificados em um estado quântico por um circuito de mapeamento de características, que neste estudo é um circuito de evolução de Pauli de primeira ordem sem emaranhamento, conhecido como \textit{ZFeatureMap}. Esse circuito de mapeamento de características é seguido por um circuito variacional parametrizado, que neste estudo é o circuito \textit{RealAmplitudes} com 12 parâmetros.
+
+O treinamento do classificador quântico é realizado através de um otimizador que atualiza os parâmetros do circuito variacional com o objetivo de minimizar a função de custo. Neste estudo, o otimizador escolhido foi o COBYLA (\textit{Constrained Optimization BY Linear Approximations}), um otimizador sem derivadas para problemas de otimização com restrições.
+
+A metodologia do projeto abrange as seguintes etapas:
+
+\begin{enumerate}
+\item \textbf{Base de dados}: Utilização do conjunto de dados Iris para treinamento e teste;
+\item \textbf{Codificação de Dados}: Transformação dos dados clássicos do conjunto de dados Iris em estados quânticos usando o método \textit{ZFeatureMap};
+\item \textbf{Modelo}: Construção e otimização de um circuito quântico parametrizado com o classificador quântico variacional (VQC), usando o \textit{ansatz RealAmplitudes};
+\item \textbf{Medição e Decodificação}: Conversão dos dados quânticos de volta para dados clássicos para interpretação;
+\item \textbf{Otimização}: Otimização do modelo para melhor desempenho;
+\item \textbf{Análise dos resultados}: Análise dos resultados obtidos.
+\end{enumerate}
+
+\section{Base de dados}
+
+A base para treinamento e teste do classificador quântico é o conjunto de dados Iris. Esse conjunto de dados é composto por 150 amostras, sendo 50 amostras de cada uma das três espécies de flor: \textit{Iris setosa} (íris pontiaguda), \textit{Iris versicolor} (bandeira azul) e \textit{Iris virginica} (íris da Virgínia). Cada amostra possui quatro atributos: comprimento e largura da sépala e comprimento e largura da pétala.
+
+\section{Codificação de Dados}
+
+A segunda fase envolve a transformação dos dados clássicos do conjunto de dados Iris para a representação em estados quânticos. Para isso, emprega-se o método de codificação \textit{ZFeatureMap} \cite{Havlicek2019qSupervisedLearning}. O \textit{ZFeatureMap} é um circuito quântico que realiza superposições e rotações de qubits por meio de portas de Hadamard, todas parametrizadas pelas características da amostra.
+
+\begin{figure}[H]
+\centering
+\caption{Circuito utilizado pelo método de codificação \textit{ZFeatureMap}.}
+\begin{quantikz}[row sep=0.35cm, column sep=0.45cm]
+\lstick{$q_0$} & \gate{H} & \gate{P(2.0*x[0])} & \qw \\
+\lstick{$q_1$} & \gate{H} & \gate{P(2.0*x[1])} & \qw \\
+\lstick{$q_2$} & \gate{H} & \gate{P(2.0*x[2])} & \qw \\
+\lstick{$q_3$} & \gate{H} & \gate{P(2.0*x[3])} & \qw
+\end{quantikz}
+\label{fig:ZFeatureMap}
+\smallcaption{Fonte: Autor.}
+\end{figure}
+
+\section{Modelo} \label{ansatz}
+
+Na terceira etapa, é construído um modelo de aprendizado utilizando o classificador quântico variacional de \citeonline{Havlicek2019qSupervisedLearning} e o pacote \textit{Qiskit Machine Learning}. Diferentemente da QSVM, que utiliza o computador quântico para estimar uma matriz do \textit{kernel}, esse modelo realiza a classificação diretamente no circuito quântico.
+
+O modelo é um circuito quântico parametrizado, chamado \textit{ansatz}, aplicado aos dados codificados; seus parâmetros são otimizados por meio do processo de treinamento para que a medição da saída separe as classes. Para este estudo, utiliza-se o \textit{ansatz RealAmplitudes}. Esse \textit{ansatz} consiste em rotações do estado dos qubits em torno do eixo $y$ por ângulos que são os parâmetros variacionais do circuito. Como as rotações são realizadas em torno do eixo $y$, as amplitudes são números reais. Além das rotações, o \textit{ansatz} também envolve portas $cX$ que produzem emaranhamento entre os qubits.
+
+\begin{figure}[H]
+\centering
+\caption{Circuito utilizado pelo \textit{ansatz RealAmplitudes}.}
+\label{fig:RealAmplitudes}
+\resizebox{\textwidth}{!}{%
+\begin{quantikz}[row sep=0.35cm, column sep=0.28cm]
+\lstick{$q_0$} & \gate{R_y(\theta[0])} & \qw      & \qw      & \ctrl{1} & \gate{R_y(\theta[4])} & \qw      & \qw      & \ctrl{1} & \gate{R_y(\theta[8])}  & \qw \\
+\lstick{$q_1$} & \gate{R_y(\theta[1])} & \qw      & \ctrl{1} & \targ{}  & \gate{R_y(\theta[5])} & \qw      & \ctrl{1} & \targ{}  & \gate{R_y(\theta[9])}  & \qw \\
+\lstick{$q_2$} & \gate{R_y(\theta[2])} & \ctrl{1} & \targ{}  & \qw      & \gate{R_y(\theta[6])} & \ctrl{1} & \targ{}  & \qw      & \gate{R_y(\theta[10])} & \qw \\
+\lstick{$q_3$} & \gate{R_y(\theta[3])} & \targ{}  & \qw      & \qw      & \gate{R_y(\theta[7])} & \targ{}  & \qw      & \qw      & \gate{R_y(\theta[11])} & \qw
+\end{quantikz}%
+}
+\smallcaption{Fonte: Autor.}
+\end{figure}
+
+\section{Medição e Decodificação de Dados}
+
+Após o treinamento do modelo VQC, os dados quânticos são medidos e convertidos de volta para valores clássicos, permitindo a comparação dos resultados de classificação com as etiquetas originais do conjunto de dados Iris. A medição do circuito quântico é realizada ao final do processo, e os resultados são interpretados como probabilidades associadas às possíveis classificações das amostras.
+
+\section{Otimização}
+
+A otimização do modelo de treinamento é realizada ajustando diferentes parâmetros, como o número de repetições (\textit{reps}) nos circuitos \textit{ZFeatureMap} e \textit{RealAmplitudes}, a escolha do otimizador (por exemplo, COBYLA) e o número máximo de iterações, permitindo ao modelo aprender os parâmetros que minimizam a função custo utilizada. O objetivo da otimização é aprimorar o desempenho do classificador quântico e reduzir o tempo de treinamento, proporcionando uma solução eficiente e eficaz para o problema de classificação em questão.
+
+\section{Análise dos resultados}
+
+Na fase final, é realizada uma análise dos resultados obtidos durante o treinamento do modelo VQC para avaliar a eficácia do classificador quântico. Essa análise compara as etiquetas previstas pelo classificador quântico com as etiquetas originais do conjunto de dados Iris, utilizando métricas de avaliação de desempenho, como precisão, \textit{recall}, especificidade, \textit{F1-score} e AUC-ROC.
+
+\section{Conclusão do Capítulo}
+
+Este capítulo apresentou as principais etapas envolvidas na construção de um classificador quântico variacional utilizando o conjunto de dados Iris. A metodologia proposta inclui a conversão de dados clássicos em estados quânticos, a construção de um modelo de aprendizado quântico, a conversão dos dados quânticos de volta para clássicos, a otimização dos parâmetros do modelo e a análise dos resultados.
+
+Os métodos e técnicas utilizados neste projeto estão em conformidade com o conhecimento atual em computação quântica e aprendizado de máquina quântico até a data de escrita deste documento. No entanto, à medida que novas descobertas e avanços são realizados na área, esses métodos podem evoluir. Assim, este projeto serve como um ponto de partida para futuras pesquisas e desenvolvimentos em classificadores quânticos e suas aplicações em problemas de classificação mais complexos e variados.

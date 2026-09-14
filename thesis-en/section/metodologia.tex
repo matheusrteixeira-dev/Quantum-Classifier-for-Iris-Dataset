@@ -1,0 +1,82 @@
+\chapter{METHODOLOGY} \label{chap_metodologia}
+
+This chapter outlines the methods used to create the quantum classifier with a variational quantum classifier (VQC) and the Iris dataset as the training base. To illustrate the advantage of using a quantum classifier, it is compared with a classical classifier based on traditional machine learning methods. The experiments were run on a quantum-computer simulator and on a real quantum computer to improve the validation of the results obtained.
+
+\section{Operation of the Classical and Quantum Classifiers}
+
+The classical classifier was implemented with the support vector machine (SVM) algorithm \cite{Zhou2018HandwrittenDigitRecognition}. The SVM is a powerful supervised learning algorithm that constructs an optimal hyperplane in a high-dimensional (or infinite-dimensional) space to separate data from different classes. In this study, it was used with a linear kernel and a one-vs-rest scheme to address the multiclass problem of the Iris dataset.
+
+The quantum classifier, also known as a variational quantum classifier (VQC), is based on the variational architecture of the quantum processor \cite{Havlicek2019qSupervisedLearning}. In the quantum classifier, data are encoded into a quantum state by a feature-mapping circuit. In this study, that circuit is a first-order Pauli-evolution circuit without entanglement, known as \textit{ZFeatureMap}. The feature-mapping circuit is followed by a parameterized variational circuit, which in this study is the \textit{RealAmplitudes} circuit with 12 parameters.
+
+The quantum classifier is trained by an optimizer that updates the parameters of the variational circuit to minimize the cost function. The optimizer selected for this study was COBYLA (\textit{Constrained Optimization BY Linear Approximations}), a derivative-free optimizer for constrained optimization problems.
+
+The project methodology comprises the following stages:
+
+\begin{enumerate}
+\item \textbf{Dataset}: use of the Iris dataset for training and testing;
+\item \textbf{Data encoding}: transformation of classical data from the Iris dataset into quantum states using the \textit{ZFeatureMap} method;
+\item \textbf{Model}: construction and optimization of a parameterized quantum circuit with a variational quantum classifier (VQC), using the \textit{RealAmplitudes} ansatz;
+\item \textbf{Measurement and decoding}: conversion of quantum data back into classical data for interpretation;
+\item \textbf{Optimization}: optimization of the model to improve performance;
+\item \textbf{Analysis of results}: analysis of the results obtained.
+\end{enumerate}
+
+\section{Dataset}
+
+The Iris dataset forms the basis for training and testing the quantum classifier. It contains 150 samples, with 50 samples from each of three flower species: \textit{Iris setosa}, \textit{Iris versicolor}, and \textit{Iris virginica}. Each sample has four attributes: sepal length and width and petal length and width.
+
+\section{Data Encoding}
+
+The second stage transforms classical data from the Iris dataset into a quantum-state representation. For this purpose, the \textit{ZFeatureMap} encoding method is used \cite{Havlicek2019qSupervisedLearning}. The \textit{ZFeatureMap} is a quantum circuit that creates superpositions and performs qubit rotations through Hadamard and phase gates parameterized by the sample features.
+
+\begin{figure}[H]
+\centering
+\caption{Circuit used by the \textit{ZFeatureMap} encoding method.}
+\begin{quantikz}[row sep=0.35cm, column sep=0.45cm]
+\lstick{$q_0$} & \gate{H} & \gate{P(2.0*x[0])} & \qw \\
+\lstick{$q_1$} & \gate{H} & \gate{P(2.0*x[1])} & \qw \\
+\lstick{$q_2$} & \gate{H} & \gate{P(2.0*x[2])} & \qw \\
+\lstick{$q_3$} & \gate{H} & \gate{P(2.0*x[3])} & \qw
+\end{quantikz}
+\label{fig:ZFeatureMap}
+\smallcaption{Source: Author.}
+\end{figure}
+
+\section{Model} \label{ansatz}
+
+In the third stage, a learning model is constructed using the variational quantum classifier of \citeonline{Havlicek2019qSupervisedLearning} and the \textit{Qiskit Machine Learning} package. Unlike the QSVM, which uses the quantum computer to estimate a kernel matrix, this model performs the classification directly in the quantum circuit.
+
+The model is a parameterized quantum circuit, called an ansatz, applied to the encoded data; its gate parameters are optimized during training so that the measured output separates the classes. This study uses the \textit{RealAmplitudes} ansatz. It consists of rotations of the qubit states about the $y$ axis by angles that serve as the variational parameters of the circuit. Because the rotations are performed about the $y$ axis, the amplitudes are real numbers. In addition to the rotations, the ansatz contains $cX$ gates that produce entanglement between the qubits.
+
+\begin{figure}[H]
+\centering
+\caption{Circuit used by the \textit{RealAmplitudes} ansatz.}
+\label{fig:RealAmplitudes}
+\resizebox{\textwidth}{!}{%
+\begin{quantikz}[row sep=0.35cm, column sep=0.28cm]
+\lstick{$q_0$} & \gate{R_y(\theta[0])} & \qw      & \qw      & \ctrl{1} & \gate{R_y(\theta[4])} & \qw      & \qw      & \ctrl{1} & \gate{R_y(\theta[8])}  & \qw \\
+\lstick{$q_1$} & \gate{R_y(\theta[1])} & \qw      & \ctrl{1} & \targ{}  & \gate{R_y(\theta[5])} & \qw      & \ctrl{1} & \targ{}  & \gate{R_y(\theta[9])}  & \qw \\
+\lstick{$q_2$} & \gate{R_y(\theta[2])} & \ctrl{1} & \targ{}  & \qw      & \gate{R_y(\theta[6])} & \ctrl{1} & \targ{}  & \qw      & \gate{R_y(\theta[10])} & \qw \\
+\lstick{$q_3$} & \gate{R_y(\theta[3])} & \targ{}  & \qw      & \qw      & \gate{R_y(\theta[7])} & \targ{}  & \qw      & \qw      & \gate{R_y(\theta[11])} & \qw
+\end{quantikz}%
+}
+\smallcaption{Source: Author.}
+\end{figure}
+
+\section{Data Measurement and Decoding}
+
+After the VQC model is trained, the quantum data are measured and converted back into classical values, allowing the classification results to be compared with the original labels of the Iris dataset. The quantum circuit is measured at the end of the process, and the results are interpreted as probabilities associated with the possible classifications of the samples.
+
+\section{Optimization}
+
+The training model is optimized by adjusting different parameters, such as the number of repetitions (\textit{reps}) in the \textit{ZFeatureMap} and \textit{RealAmplitudes} circuits, the choice of optimizer (for example, COBYLA), and the maximum number of iterations. These adjustments allow the model to learn the parameters that minimize the selected cost function. The objective of optimization is to improve the performance of the quantum classifier and reduce training time, providing an efficient and effective solution to the classification problem under study.
+
+\section{Analysis of Results}
+
+In the final stage, the results obtained during the training of the VQC model are analyzed to evaluate the effectiveness of the quantum classifier. This analysis compares the labels predicted by the quantum classifier with the original labels of the Iris dataset using performance metrics such as precision, recall, specificity, F1-score, and AUC-ROC.
+
+\section{Chapter Summary}
+
+This chapter presented the main stages involved in constructing a variational quantum classifier using the Iris dataset. The proposed methodology includes converting classical data into quantum states, constructing a quantum learning model, converting quantum data back into classical data, optimizing the model parameters, and analyzing the results.
+
+The methods and techniques used in this project are consistent with the state of knowledge in quantum computing and quantum machine learning at the time of writing. However, these methods may evolve as new discoveries and advances are made in the field. Thus, this project serves as a starting point for future research and development involving quantum classifiers and their application to more complex and varied classification problems.
