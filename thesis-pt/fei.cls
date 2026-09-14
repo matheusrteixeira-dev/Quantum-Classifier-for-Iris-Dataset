@@ -84,7 +84,7 @@
 \fancyhead[RO,LE]{\footnotesize\thepage}% numero da página em fonte menor que a do texto
 \setlength{\headheight}{14.4pt}
 
-\RequirePackage[english,portuges]{babel}
+\RequirePackage[english,brazil]{babel}
 \RequirePackage[T1]{fontenc}
 
 \RequirePackage{setspace}
@@ -93,7 +93,7 @@
 
 \RequirePackage[font={singlespacing},format=hang, justification=raggedright,labelsep=endash,singlelinecheck=false]{caption} % fontes das legendas
 
-\selectlanguage{portuges} % idioma do documento
+\selectlanguage{brazil} % idioma do documento
 
 \widowpenalty=10000
 \clubpenalty=10000
@@ -346,7 +346,7 @@ postheadspace=1em
 
 \newenvironment{resumo}{\part*{Resumo}\pagestyle{empty}\begin{spacing}{1.1}\noindent\normalsize}{\end{spacing}\cleardoublepage\pagestyle{fancy}}
 
-\renewenvironment{abstract}{\selectlanguage{english}\part*{Abstract}\pagestyle{empty}\begin{spacing}{1.1}\noindent\normalsize}{\end{spacing}\cleardoublepage\pagestyle{fancy}\selectlanguage{portuges}}
+\renewenvironment{abstract}{\selectlanguage{english}\part*{Abstract}\pagestyle{empty}\begin{spacing}{1.1}\noindent\normalsize}{\end{spacing}\cleardoublepage\pagestyle{fancy}\selectlanguage{brazil}}
 
 \newenvironment{agradecimentos}{\part*{Agradecimentos}\pagestyle{empty}}{\cleardoublepage\pagestyle{fancy}}
 
@@ -394,7 +394,7 @@ postheadspace=1em
   \renewcommand*{\glossarypreamble}{\thispagestyle{empty}\pagestyle{empty}}
 \fi
 
-\addto\captionsportuges{%
+\addto\captionsbrazil{%
   \renewcommand*{\listfigurename}{Lista de Ilustra\c{c}\~oes}%
   \renewcommand*{\contentsname}{Sum\'ario}%
   \renewcommand*{\acronymname}{\hfill Lista de Abreviaturas \hfill \mbox{}}%

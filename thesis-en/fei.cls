@@ -89,7 +89,7 @@
 \setlength{\headheight}{14.4pt}
 \setlength{\footskip}{5pt}
 
-\RequirePackage[portuguese,english]{babel}
+\RequirePackage[brazil,english]{babel}
 \RequirePackage[T1]{fontenc}
 
 \RequirePackage{setspace}

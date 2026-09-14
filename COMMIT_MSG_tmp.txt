@@ -1,0 +1,11 @@
+﻿Correcoes v5-v6: portugues brasileiro e compatibilidade com Linux
+
+- fei.cls (PT e EN): babel passa a declarar brazil no lugar de portuges,
+  e o bloco de legendas acompanha (captionsbrazil).
+- main.tex (PT): removida a segunda carga de babel, que conflitava com as
+  opcoes ja aplicadas pela classe (Option clash for package babel).
+- main.tex (EN): o ambiente resumo passa a usar brazil.
+- imagens: ansatz, confusion_classic_train e zfeaturemap renomeadas de .PNG
+  para .png nas duas arvores. O Overleaf compila em Linux, onde a caixa do
+  nome importa, e resultados.tex (PT) ja chamava a versao em minusculas.
+- removidos thesis-pt.zip e thesis-en.zip do repositorio.
