@@ -39,10 +39,12 @@
 \makeindex
 \newacronym[longplural=Quantum Machine Learning]{qml}{QML}{\textit{Quantum Machine Learning}}
 \newacronym[longplural=Quantum Support Vector Machine]{qsvm}{QSVM}{\textit{Quantum Support Vector Machine}}
+\newacronym[longplural=Variational Quantum Classifier]{vqc}{VQC}{\textit{Variational Quantum Classifier}}
 \newacronym[longplural=Quantum Principal Component Analysis]{qpca}{qPCA}{\textit{Quantum Principal Component Analysis}}
 \newacronym[longplural=Support Vector Machine]{svm}{SVM}{\textit{Support Vector Machine}}
 \newacronym[longplural=Quantum Neural Network]{qnn}{QNN}{\textit{Quantum Neural Network}}
-\makeglossaries
+\makenoidxglossaries
+\newcounter{tablebeforeacronyms}
 \begin{document}
 
 \maketitle
@@ -68,7 +70,14 @@ As transistors used in CPUs approach their minimum physical dimensions, classica
 
 \listoffigures
 \listoftables
-\printacronyms
+\glsaddall
+\setcounter{tablebeforeacronyms}{\value{table}}
+\begingroup
+\let\clearpage\relax
+\printnoidxglossary[type=\acronymtype]
+\endgroup
+\setcounter{table}{\value{tablebeforeacronyms}}
+\clearpage
 \let\cleardoublepage\clearpage
 
 \nocite{Schuld2021QuantumML, Schuld2020EffectOD, Huang2020PowerOD, Oshurko2020QuantumML, Broughton2020TensorFlowQA, Schuld2018QuantumML, Cerezo2022ChallengesAO, Meyer2022ExploitingSI, Larocca2022GroupInvariantQM, Chen2021FederatedQM, Caro2021GeneralizationIQ, Wu2022ChallengesAO, Dilip2022DataCF, Gibbs2022DynamicalSV, Peters2022GeneralizationDO, Zheng2022OnTS, Gupta2022QuantumML, Mensa2022QuantumML, Kerenidis2022QuantumML, Ragone2022RepresentationTF, Garcia2022SystematicLR, Schuld2020Circuitcentric, Liu2021QuantumSpeedup}
